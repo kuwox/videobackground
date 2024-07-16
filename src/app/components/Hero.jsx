@@ -3,14 +3,26 @@ import { useEffect } from "react";
 
 export default function Hero() {
   useEffect(() => {
-    const video = document.getElementById("background-video");
+    const video = document.getElementById('background-video');
     // Intento de reproducir el video en iOS
     if (video) {
       video.play().catch((error) => {
-        console.log("Reproducción automática no permitida: ", error);
+        console.log('Reproducción automática no permitida: ', error);
       });
     }
+
+    // Añadir listener para toque
+    const handleTouch = () => {
+      video.play();
+    };
+
+    document.addEventListener('touchstart', handleTouch);
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouch);
+    };
   }, []);
+
   return (
     <>
       <video
@@ -20,6 +32,7 @@ export default function Hero() {
         muted
         loop
         playsInline
+        controls // Agregar controles para prueba
       >
         <source src="/video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
